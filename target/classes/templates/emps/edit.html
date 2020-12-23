@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Dashboard Template for Bootstrap</title>
+		<!-- Bootstrap core CSS -->
+		<link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link th:href="@{/static/css/dashboard.css}" rel="stylesheet">
+		<style type="text/css">
+			/* Chart.js */
+			
+			@-webkit-keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			@keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			.chartjs-render-monitor {
+				-webkit-animation: chartjs-render-animation 0.001s;
+				animation: chartjs-render-animation 0.001s;
+			}
+		</style>
+	</head>
+
+	<body>
+	<!--导航栏-->
+	<div th:replace="~{fragments/main::nav-bar}"></div>
+
+		<div class="container-fluid">
+			<div class="row">
+				<!--侧边栏-->
+				<div th:replace="~{fragments/main::side-bar(active='empsList')}"></div>
+
+				<!--表单添加-->
+
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+					<!--name属性要和实体类的属性一一对应-->
+					<form th:action="@{/emps/edit}" th:method="post">
+						<!--增加隐藏域，修改特定的id，否则提交上去的信息没有id，从而导致自增-->
+						<input type="hidden" name="id" th:value="${emp.id}">
+
+						<div class="form-group">
+							<label for="name-input">LastName</label>
+							<input th:value="${emp.lastName}" type="text" class="form-control" id="name-input" placeholder="LastName" name="lastName">
+						</div>
+
+						<div class="form-group">
+							<label for="email-input">Email</label>
+							 <input th:value="${emp.email}" type="email" class="form-control" id="email-input" placeholder="Email" name="email">
+						</div>
+
+						<div class="form-group">
+							<label for="gender-box">Gender</label>
+							<div id="gender-box">
+								<div class="form-check form-check-inline">
+									<input th:checked="${emp.gender==1}" class="form-check-input" type="radio" name="gender" id="gender-male" value="1">
+									<label class="form-check-label" for="gender-male">男</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input th:checked="${emp.gender==0}" class="form-check-input" type="radio" name="gender" id="gender-female" value="0">
+									<label class="form-check-label" for="gender-female">女</label>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<!--这里展示的是部门名字，但实际上提交的是部门id-->
+							<label for="department-option">Department</label>
+							<select class="form-control" id="department-option" name="departmentId">
+								<!--提交的是value值-->
+								<option th:selected="${dept.id==emp.departmentId}" th:each="dept : ${departments}" th:text="${dept.departmentName}" th:value="${dept.id}">部门</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label for="birth-input">Birth</label>
+							<input th:value="${#dates.format(emp.birth, 'yyyy-MM-dd')}" type="text" class="form-control" id="birth-input" placeholder="Birth" name="birth">
+						</div>
+
+						<button type="submit" class="btn btn-outline-primary">修改</button>
+					</form>
+				</main>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" th:src="@{/static/js/jquery-3.2.1.slim.min.js}"></script>
+		<script type="text/javascript" th:src="@{/static/js/popper.min.js}"></script>
+		<script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
+
+		<!-- Icons -->
+		<script type="text/javascript" th:src="@{/static/js/feather.min.js}"></script>
+		<script>
+			feather.replace()
+		</script>
+
+		<!-- Graphs -->
+		<script type="text/javascript" th:src="@{/static/js/Chart.min.js}"></script>
+		<script>
+			var ctx = document.getElementById("myChart");
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+					datasets: [{
+						data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
+						lineTension: 0,
+						backgroundColor: 'transparent',
+						borderColor: '#007bff',
+						borderWidth: 4,
+						pointBackgroundColor: '#007bff'
+					}]
+				},
+				options: {
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero: false
+							}
+						}]
+					},
+					legend: {
+						display: false,
+					}
+				}
+			});
+		</script>
+
+	</body>
+
+</html>

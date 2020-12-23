@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymyleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>success</title>
+</head>
+<body>
+    <h1>成功！</h1>
+    <div th:text="${hello}"></div>
+    <hr/>
+<!--    text和utext的区别：比如这个<h1>hello</h1>语句：text是将这个语句不做任何变化输出（也就是不专业转义字符）；
+        utext会识别hello为h1标题，转义该语句，将hello作为大标题输出-->
+    <div th:text="${hello}"></div>
+    <div th:utext="${hello}"></div>
+    <hr/>
+<!--    thmyleaf的两种写法：直接将值赋值给h4，三个值会循环三次h4的语句；或者span写法，循环三次span语句-->
+    <h4 th:text="${user}" th:each="user:${users}"></h4>
+    <hr/>
+    <h4>
+        <span th:each="user:${users}">this is Iterators span methods [[${user}]]     |<br/></span>
+
+    </h4>
+
+</body>
+</html>
